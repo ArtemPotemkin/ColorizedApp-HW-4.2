@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var redSliderValue = Double.random(in: 0...255)
-    @State private var greenSliderValue = Double.random(in: 0...255)
-    @State private var blueSliderValue = Double.random(in: 0...255)
+    
+    @State private var redSliderValue = Double.random(in: 0...255).rounded()
+    @State private var greenSliderValue = Double.random(in: 0...255).rounded()
+    @State private var blueSliderValue = Double.random(in: 0...255).rounded()
     
     var body: some View {
         ZStack{
@@ -47,6 +48,20 @@ struct SliderView: View {
                 .frame(width: 35, height: 40)
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(tintColor)
+            TextField("000", value: $value, format: .number)
+                .frame(width: 60)
+                .multilineTextAlignment(.center)
+                .textFieldStyle(.roundedBorder)
+                .keyboardType(.numberPad)
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        
+                        Button("Done") {
+                            
+                        }
+                    }
+                }
         }
     }
 }
