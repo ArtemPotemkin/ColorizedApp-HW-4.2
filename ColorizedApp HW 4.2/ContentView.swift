@@ -13,55 +13,78 @@ struct ContentView: View {
     @State private var greenSliderValue = Double.random(in: 0...255).rounded()
     @State private var blueSliderValue = Double.random(in: 0...255).rounded()
     
+    @FocusState private var focusField: Field?
+    
     var body: some View {
         ZStack{
             Color.green
                 .opacity(0.2)
                 .ignoresSafeArea()
+                .onTapGesture {
+                    focusField = nil
+                }
             
             VStack {
-                Color(
-                    red: redSliderValue/255,
-                    green: greenSliderValue/255,
-                    blue: blueSliderValue/255)
-                .frame(width: 250, height: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 25))
+                ColorView(red: redSliderValue, green: greenSliderValue, blue: blueSliderValue)
                 Spacer()
                 
-                SliderView(value: $redSliderValue, tintColor: .red)
-                SliderView(value: $greenSliderValue, tintColor: .green)
-                SliderView(value: $blueSliderValue, tintColor: .blue)
+                ColorSliderView(value: $redSliderValue, tintColor: .red)
+                    .focused($focusField, equals: .red)
+                ColorSliderView(value: $greenSliderValue, tintColor: .green)
+                    .focused($focusField, equals: .green)
+                ColorSliderView(value: $blueSliderValue, tintColor: .blue)
+                    .focused($focusField, equals: .blue)
                 Spacer()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button(action: previousField) {
+                        Image(systemName: "chevron.up")
+                    }
+                    Button(action: nextField) {
+                        Image(systemName: "chevron.down")
+                    }
+                    Spacer()
+                    Button("Done") {
+                        focusField = nil
+                    }
+                }
             }
             .padding()
         }
     }
 }
 
-struct SliderView: View {
-    @Binding var value: Double
-    let tintColor: Color
+extension ContentView {
+    private enum Field {
+        case red
+        case green
+        case blue
+    }
     
-    var body: some View {
-        HStack {
-            Text("\(lround(value))")
-                .frame(width: 35, height: 40)
-            Slider(value: $value, in: 0...255, step: 1)
-                .tint(tintColor)
-            TextField("000", value: $value, format: .number)
-                .frame(width: 60)
-                .multilineTextAlignment(.center)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        
-                        Button("Done") {
-                            
-                        }
-                    }
-                }
+    private func nextField() {
+        switch focusField {
+        case .red:
+            focusField = .green
+        case .green:
+            focusField = .blue
+        case .blue:
+            focusField = .red
+        case .none:
+            focusField = nil
+        }
+    }
+    
+    private func previousField() {
+        switch focusField {
+        case .red:
+            focusField = .blue
+        case .green:
+            focusField = .red
+        case .blue:
+            focusField = .green
+        case .none:
+            focusField = nil
         }
     }
 }
