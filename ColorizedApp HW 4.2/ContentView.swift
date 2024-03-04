@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  ColorizedApp HW 4.2
 //
-//  Created by Артём Потёмкин on 08.02.2024.
+//  Created by Artem Potemkin on 08.02.2024.
 //
 
 import SwiftUI
