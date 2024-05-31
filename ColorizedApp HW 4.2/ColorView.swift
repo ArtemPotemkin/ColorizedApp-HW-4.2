@@ -3,7 +3,7 @@
 //  ColorizedApp HW 4.2
 //
 //  Created by Artem Potemkin on 12.02.2024.
-// regenerate terminal token
+// regenerate terminal token twice
 
 import SwiftUI
 
